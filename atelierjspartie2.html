@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Inscription </title>
+  <style>
+    .error {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+    <h1  style="color:blue;"><strong>Formulaire d'inscription  </h1>
+
+<form id="myForm">
+    <table>
+        <tr>
+          <td><label for="nom">Nom:</label></td>
+          <td><input type="text" id="nom" name="nom"></td>
+        </tr>
+        <tr>
+          <td><label for="prenom">Prénom:</label></td>
+          <td><input type="text" id="prenom" name="prenom"></td>
+        </tr>
+        <tr>
+          <td><label for="adresse">Adresse:</label></td>
+          <td><input type="text" id="adresse" name="adresse"></td>
+        </tr>
+        <tr>
+          <td><label for="telephone">Téléphone:</label></td>
+          <td><input type="text" id="telephone" name="telephone"></td>
+        </tr>
+        <tr>
+          <td><label for="dateNaissance">Date de naissance:</label></td>
+          <td><input type="date" id="dateNaissance" name="dateNaissance"></td>
+        </tr>
+        <tr>
+          <td><label for="email">Email:</label></td>
+          <td><input type="email" id="email" name="email"></td>
+        </tr>
+        <tr>
+          <td><label for="motDePasse">Mot de passe:</label></td>
+          <td><input type="password" id="motDePasse" name="motDePasse"></td>
+        </tr>
+        <tr>
+          <td><label for="confMotDePasse">Confirmation mot de passe:</label></td>
+          <td><input type="password" id="confMotDePasse" name="confMotDePasse"></td>
+        </tr>
+        <tr>
+          <td></td>
+          <td><input type="reset" value="Reset"></td>
+          <td><input type="submit" value="Submit"></td>
+        </tr>
+      </table>
+
+<script>
+  document.getElementById('myForm').addEventListener('submit', function(event) {
+    event.preventDefault(); 
+
+    const nom = document.getElementById('nom').value;
+    const prenom = document.getElementById('prenom').value;
+    const telephone = document.getElementById('telephone').value;
+    const motDePasse = document.getElementById('motDePasse').value;
+    const confMotDePasse = document.getElementById('confMotDePasse').value;
+
+    const nomRegex = /^[a-zA-ZÀ-ÿ\s]{3,}$/;
+    const prenomRegex = /^.{4,}$/;
+    const telRegex = /^\d+$/;
+    const passRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d).{10,}$/;
+
+    let isValid = true;
+
+    if (!nomRegex.test(nom)) {
+      showError('nom', ' le Nom  doit contenir  des lettres et avoir au moins 3 caractères.');
+      isValid = false;
+    } else {
+      hideError('nom');
+    }
+
+    if (!prenomRegex.test(prenom)) {
+      showError('prenom', ' le Prénom doit compter au minimum 4 caractères.');
+      isValid = false;
+    } else {
+      hideError('prenom');
+    }
+
+    if (!telRegex.test(telephone)) {
+      showError('telephone', 'Le numéro de téléphone doit contenir  des chiffres seulement .');
+      isValid = false;
+    } else {
+      hideError('telephone');
+    }
+
+    if (!passRegex.test(motDePasse)) {
+      showError('motDePasse', 'Le mot de passe doit contenir au moins 10 caractères, dont au moins une lettre majuscule, une lettre minuscule et un chiffre.');
+      isValid = false;
+    } else {
+      hideError('motDePasse');
+    }
+
+    if (motDePasse !== confMotDePasse) {
+      showError('confMotDePasse', 'Les mots de passe ne sont pas identiques.');
+      isValid = false;
+    } else {
+      hideError('confMotDePasse');
+    }
+
+    if (isValid) {
+      alert('Formulaire soumis avec succès!');
+      // Ici, vous pouvez envoyer les données du formulaire vers un serveur, par exemple
+    }
+  });
+
+  function showError(fieldId, errorMessage) {
+    const field = document.getElementById(fieldId);
+    const errorSpan = document.createElement('span');
+    errorSpan.classList.add('error');
+    errorSpan.innerText = errorMessage;
+
+    const existingError = field.nextElementSibling;
+    if (existingError && existingError.classList.contains('error')) {
+      field.parentNode.removeChild(existingError);
+    }
+
+    field.parentNode.insertBefore(errorSpan, field.nextSibling);
+  }
+
+  function hideError(fieldId) {
+    const field = document.getElementById(fieldId);
+    const existingError = field.nextElementSibling;
+    if (existingError && existingError.classList.contains('error')) {
+      field.parentNode.removeChild(existingError);
+    }
+  }
+</script>
+
+</body>
+</html>
+
